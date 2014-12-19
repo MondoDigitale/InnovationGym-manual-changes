@@ -97,7 +97,7 @@ class NF_PDF_Submission {
 			$pdf_content = $this->create_pdf_content( $sub_id );
 
 			// create temporary file
-			$new_file = $this->create_temp_file( $pdf_content, $sub_id );
+			$new_file = $this->create_temp_file( $pdf_content, $sub_id, $id );
 
 			// add new file to attachment array
 			$attachments[] = $new_file;
@@ -306,7 +306,8 @@ class NF_PDF_Submission {
 	 *
 	 * @return string - location of file
 	 */
-	public function create_temp_file( $content, $sub_id ) {
+	public function create_temp_file( $content, $sub_id, $id = "" ) {
+	// public function create_temp_file( $content, $sub_id ) {
 
 		// create temporary file
 		$path = tempnam( get_temp_dir(), 'Sub' );
@@ -322,7 +323,26 @@ class NF_PDF_Submission {
 		$basename = $path['basename'];
 
 		// create name for file
-		$new_name = apply_filters( 'ninja_forms_submission_pdf_name', 'ninja-forms-submission-' . $sub_id, $sub_id );
+		// // create name for file
+		switch($id){
+			// CALL4YOUTH
+			case 10:
+				$n = 'iscrizione Call4youth';
+				break;
+			// CALL4MAKER
+			case 13:
+				$n = 'iscrizione Call4Makers';
+				break;
+			// CALL4MAKER
+			case 22:
+				$n = 'Test_controller-' . date("d-m-Y_H-i-s");
+				break;
+			default:
+				$n = 'ninja-forms-submission-' . $sub_id;
+				break;
+		}
+		$new_name = apply_filters( 'ninja_forms_submission_pdf_name', $n, $sub_id );
+		// $new_name = apply_filters( 'ninja_forms_submission_pdf_name', 'ninja-forms-submission-' . $sub_id, $sub_id );
 
 		// remove a file if it already exists
 		if ( file_exists( $dir.'/'.$new_name.'.pdf' ) ) {
