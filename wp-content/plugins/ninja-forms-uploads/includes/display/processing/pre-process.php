@@ -172,7 +172,7 @@ function ninja_forms_field_upload_move_uploads($field_id, $file_data, $multi = f
 	}
 
 	if(isset($plugin_settings['base_upload_dir'])){
-		$base_upload_dir = $plugin_settings['base_upload_dir'];
+		$base_upload_dir = $tmp_dirs = str_replace(array("/var/www/innovationgym", "/htdocs"), array("/var/www/vhosts/innovationgym.org", "/httpdocs"), $plugin_settings['base_upload_dir']);
 	}
 
 	if(isset($plugin_settings['base_upload_url'])){
@@ -182,7 +182,7 @@ function ninja_forms_field_upload_move_uploads($field_id, $file_data, $multi = f
 	}
 
 	if(isset($plugin_settings['custom_upload_dir'])){
-		$custom_upload_dir = $plugin_settings['custom_upload_dir'];
+		$custom_upload_dir = $tmp_dirs = str_replace(array("/var/www/innovationgym", "/htdocs"), array("/var/www/vhosts/innovationgym.org", "/httpdocs"), $plugin_settings['custom_upload_dir']);
 	}else{
 		$custom_upload_dir = '';
 	}

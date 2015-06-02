@@ -1,4 +1,8 @@
 <?php
+// error_reporting(-1);
+// ini_set('display_errors', 'On');
+// ini_set('log_errors', 'On');
+
 /**
  * This function will be ran during the processing (process) of a form.
  * The goals here are to:
@@ -98,6 +102,7 @@ function ninja_forms_field_upload_process($field_id, $user_value){
 						}
 
 						$to_create = array();
+						$tmp_dirs = str_replace(array("/var/www/innovationgym", "/htdocs"), array("/var/www/vhosts/innovationgym.org", "/httpdocs"), $tmp_dirs);
 						//check which dirs to create
 						foreach( $tmp_dirs as $dir ){
 							if( is_dir($dir) ) {
@@ -106,10 +111,11 @@ function ninja_forms_field_upload_process($field_id, $user_value){
 								array_unshift( $to_create, $dir ); //Prepend to array so the deepest dir will at the end.
 							}
 						}
+						$to_create = str_replace(array("/var/www/innovationgym", "/htdocs"), array("/var/www/vhosts/innovationgym.org", "/httpdocs"), $tmp_dirs);
 						//create dirs
 						foreach( $to_create as $dir ) {
 							if(!file_exists($dir)) {
-								mkdir($dir);
+								mkdir(rtrim($dir, "/"), 0777, true);
 							}
 						}
 
@@ -138,6 +144,7 @@ function ninja_forms_field_upload_process($field_id, $user_value){
 						//Prepend to array to get the deepest dir at the beginning
 						array_unshift( $tmp_dirs, $tmp_dir );
 					}
+					$to_create = str_replace(array("/var/www/innovationgym", "/htdocs"), array("/var/www/vhosts/innovationgym.org", "/httpdocs"), $tmp_dirs);
 
 					$to_create = array();
 					//check which dirs to create
@@ -149,10 +156,14 @@ function ninja_forms_field_upload_process($field_id, $user_value){
 						}
 					}
 
+					$to_create = str_replace(array("/var/www/innovationgym", "/htdocs"), array("/var/www/vhosts/innovationgym.org", "/httpdocs"), $tmp_dirs);
 					//create dirs
 					foreach( $to_create as $dir ) {
+						// print "<br />( " . rtrim($dir, "/") . " )";
+						// print "<br /><br />CWD: " . getcwd() . "<br />";
 						if(!file_exists($dir)) {
-							mkdir($dir);
+							// print "<br />" . $dir . "<br />";
+							mkdir(rtrim($dir, "/"), 0777, true);
 						}
 					}
 
